@@ -105,5 +105,6 @@ public class CounterController {
 //      logger.error("Failed to get access token", e);
 //      return ApiResponse.error("Failed to get access token");
 //    }
+
   }
 }
