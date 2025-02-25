@@ -1,5 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.tencent.wxcloudrun.config.ApiResponse;
@@ -7,15 +9,12 @@ import com.tencent.wxcloudrun.dto.CounterRequest;
 import com.tencent.wxcloudrun.model.Counter;
 import com.tencent.wxcloudrun.service.CounterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.List;
 
+import org.springframework.web.client.RestTemplate;
 /**
  * counter控制器
  */
@@ -25,9 +24,11 @@ public class CounterController {
 
   final CounterService counterService;
   final Logger logger;
+  private final RestTemplate restTemplate;
 
-  public CounterController(@Autowired CounterService counterService) {
+  public CounterController(@Autowired CounterService counterService, RestTemplate restTemplate) {
     this.counterService = counterService;
+    this.restTemplate = restTemplate;
     this.logger = LoggerFactory.getLogger(CounterController.class);
   }
 
@@ -79,6 +80,7 @@ public class CounterController {
       return ApiResponse.error("参数action错误");
     }
   }
+
   /**
    * 获取微信 access_token
    * @param appId 微信应用的 appid
