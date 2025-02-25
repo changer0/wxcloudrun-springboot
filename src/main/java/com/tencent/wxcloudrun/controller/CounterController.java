@@ -97,8 +97,14 @@ public class CounterController {
       JsonNode rootNode = objectMapper.readTree(response.getBody());
       String accessToken = rootNode.path("access_token").asText();
       Integer expiresIn = rootNode.path("expires_in").asInt();
+      int errcode = rootNode.path("errcode").asInt();
+      String errmsg = rootNode.path("errmsg").asText();
+      if (errcode == 0) {
+        return ApiResponse.ok().putData("access_token", accessToken).putData("expires_in", expiresIn);
+      } else {
+        return ApiResponse.error("Failed to get access token, errcode: " + errcode + "errmsg: " + errmsg);
+      }
 
-      return ApiResponse.ok().putData("access_token", accessToken).putData("expires_in", expiresIn);
     } catch (Exception e) {
       logger.error("Failed to get access token", e);
       return ApiResponse.error("Failed to get access token");
