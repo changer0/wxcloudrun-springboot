@@ -24,11 +24,9 @@ public class CounterController {
 
   final CounterService counterService;
   final Logger logger;
-  private final RestTemplate restTemplate;
 
-  public CounterController(@Autowired CounterService counterService, RestTemplate restTemplate) {
+  public CounterController(@Autowired CounterService counterService) {
     this.counterService = counterService;
-    this.restTemplate = restTemplate;
     this.logger = LoggerFactory.getLogger(CounterController.class);
   }
 
