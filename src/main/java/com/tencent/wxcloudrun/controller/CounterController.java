@@ -86,23 +86,24 @@ public class CounterController {
    * @return API response json 包含 access_token
    */
   @GetMapping(value = "/api/access_token")
-  ApiResponse getAccessToken() {
-    logger.info("/api/access_token get request with appId: {} and appSecret: {}");
-    return ApiResponse.ok("哈哈哈嗝");
-    //    String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
-//
-//    try {
-//      ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-//      ObjectMapper objectMapper = new ObjectMapper();
-//      JsonNode rootNode = objectMapper.readTree(response.getBody());
-//      String accessToken = rootNode.path("access_token").asText();
-//      Integer expiresIn = rootNode.path("expires_in").asInt();
-//
-//      return ApiResponse.ok().putData("access_token", accessToken).putData("expires_in", expiresIn);
-//    } catch (Exception e) {
-//      logger.error("Failed to get access token", e);
-//      return ApiResponse.error("Failed to get access token");
-//    }
+  ApiResponse getAccessToken(@RequestParam String appId, @RequestParam String appSecret) {
+    logger.info("/api/access_token get request with appId: {} and appSecret: {}", appId, appSecret);
+    String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
 
+    try {
+      RestTemplate restTemplate = new RestTemplate();
+      ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+      ObjectMapper objectMapper = new ObjectMapper();
+      JsonNode rootNode = objectMapper.readTree(response.getBody());
+      String accessToken = rootNode.path("access_token").asText();
+      Integer expiresIn = rootNode.path("expires_in").asInt();
+
+      return ApiResponse.ok().putData("access_token", accessToken).putData("expires_in", expiresIn);
+    } catch (Exception e) {
+      logger.error("Failed to get access token", e);
+      return ApiResponse.error("Failed to get access token");
+    }
   }
+
+
 }
