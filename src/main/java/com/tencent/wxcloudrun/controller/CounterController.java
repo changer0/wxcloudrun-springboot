@@ -88,8 +88,8 @@ public class CounterController {
    * @return API response json 包含 access_token
    */
   @GetMapping(value = "/api/access_token")
-  ApiResponse getAccessToken(@RequestParam String appId, @RequestParam String appSecret) {
-    logger.info("/api/access_token get request with appId: {} and appSecret: {}", appId, appSecret);
+  ApiResponse getAccessToken() {
+    logger.info("/api/access_token get request with appId: {} and appSecret: {}");
     return ApiResponse.ok("哈哈哈嗝");
     //    String url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
 //
